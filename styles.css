@@ -1,9 +1,4 @@
-body {
-    padding: 0;
-    margin: 0;
-  }
-  
-  html, body, #map {
-  height: 99%;
-  width: 100%;
-  }
+#map{
+  width: auto;
+  height: 88vh;
+}

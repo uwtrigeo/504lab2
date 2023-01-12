@@ -63,15 +63,15 @@ map.on('click', 'libraries', function(f) {
 
   	// Update the 'nearest-hospital' data source to include the nearest library
 	map.getSource('nearest-hospital').setData({
-        type: 'FeatureCollection',
-        features: [
-         nearestHospital
+      type: 'FeatureCollection',
+      features: [
+        nearestHospital
         ]
   });
 
 // Create a new circle layer from the 'nearest-hospital' data source
 map.addLayer({
-        id: 'nearestHospitalLayer',
+  id: 'nearestHospitalLayer',
   type: 'circle',
   source: 'nearest-hospital',
   paint: {
@@ -80,9 +80,19 @@ map.addLayer({
   }
 }, 'hospitals');
 
+// distance between library and nearest hospital
+var distance = turf.distance(refLibrary, nearestHospital, {units: 'miles'});
+  distance = distance.toFixed(2);
+
 //Add popup that gives name of the library and the name and address of the nearest hospital
 popup.setLngLat(refLibrary.geometry.coordinates)
-    .setHTML('<b>' + refLibrary.properties.BRANCH +  ' Branch Library' + '</b><br>The nearest hospital is ' + nearestHospital.properties.NAME + ', located at ' + nearestHospital.properties.ADDRESS)
+    .setHTML('<b>' + refLibrary.properties.BRANCH +  ' Branch Library' + '</b><br>The nearest hospital is ' + nearestHospital.properties.NAME + ', located at ' + nearestHospital.properties.ADDRESS + '<br>. It is ' + distance + ' miles away.')
     .addTo(map);
 
 });
+
+// attribution
+map.addControl(new mapboxgl.AttributionControl({
+  compact: true,
+  customAttribution: 'Map data; <a href="https://gisdata-piercecowa.opendata.arcgis.com/datasets/public-health-care-facilities/explore">Public Health Care Facilities</a> and, <a href="https://gisdata-piercecowa.opendata.arcgis.com/datasets/libraries/explore">Pierce County Libraries</a>'
+}));
